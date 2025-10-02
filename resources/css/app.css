@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #1a202c inset !important; /* Tailwind gray-900 */
+    box-shadow: 0 0 0 1000px #1a202c inset !important;
+    -webkit-text-fill-color: #f3f4f6 !important; /* Tailwind gray-100 */
+    caret-color: #f3f4f6 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+button {
+  transition: all 0.2s ease; /* biar halus */
+}
+
+button:hover {
+  transform: scale(1.05);
+  filter: brightness(85%); /* bikin lebih gelap */
+}
