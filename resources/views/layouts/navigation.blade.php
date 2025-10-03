@@ -14,14 +14,14 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @php $user = Auth::user(); @endphp
 
-                    @if($user->role === 'admin')
+                    @if($user->isAdmin())
                         <x-nav-link :href="route('dashboard.admin')" :active="request()->routeIs('dashboard.admin')">
                             Home
                         </x-nav-link>
-                        {{-- <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
-                            Kelola Mahasiswa
+                        <x-nav-link :href="route('anggota.index')" :active="request()->routeIs('anggota.*')">
+                            Kelola Anggota DPR
                         </x-nav-link>
-                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
+                        {{-- <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
                             Kelola Course
                         </x-nav-link>
                     @else

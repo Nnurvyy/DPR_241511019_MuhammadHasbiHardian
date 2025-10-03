@@ -10,6 +10,7 @@ class Pengguna extends Authenticatable
     use Notifiable;
     protected $table = 'pengguna';
     protected $primaryKey = 'id_pengguna';
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
@@ -21,8 +22,14 @@ class Pengguna extends Authenticatable
         'role',
     ];
 
+    // $hidden dipakai untuk menyembunyikan kolom tertentu saat model di-serialize (misalnya diubah jadi array atau JSON).
     protected $hidden = [
         'password',
+    ];
+
+    // otomatis hash password saat create pengguna
+    protected $cast = [
+        'password' => 'hashed',
     ];
 
     public function isAdmin(){
@@ -34,9 +41,8 @@ class Pengguna extends Authenticatable
     }
     
 
+    // mengabaikan remember token bawaan dari breeze
     public function GetRememberTokenName(){
         return null;
     }
-
-    // Role enum: Admin, Public
 }

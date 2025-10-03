@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnggotaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +15,15 @@ Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['aut
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
      Route::get('/dashboard-admin', [DashboardController::class, 'dashboardAdmin'])->name('dashboard.admin');
+
+    // Kelola Anggota
+    Route::get('/dashboard-admin/kelola-anggota', [AnggotaController::class, 'index'])->name('anggota.index');
+    Route::post('/dashboard-admin/kelola-anggota', [AnggotaController::class, 'store'])->name('anggota.store');
+    Route::put('/dashboard-admin/kelola-anggota/{anggota}', [AnggotaController::class, 'update'])->name('anggota.update');
+    Route::delete('/dashboard-admin/kelola-anggota/{anggota}', [AnggotaController::class, 'destroy'])->name('anggota.destroy');
+
+    Route::get('/api/anggota-all', [AnggotaController::class, 'all']);
+
 });
 
 Route::middleware(['auth', 'role:Public'])->group(function () {

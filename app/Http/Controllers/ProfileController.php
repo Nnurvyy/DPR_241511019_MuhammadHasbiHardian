@@ -34,7 +34,7 @@ class ProfileController extends Controller
         $user->save();
 
         // redirect sesuai role
-        if($user->role === 'Admin'){
+        if($user->isAdmin()){
             return redirect()->route('dashboard.admin')->with('status', 'profile-updated');
         } else {
             return redirect()->route('dashboard.user')->with('status', 'profile-updated');

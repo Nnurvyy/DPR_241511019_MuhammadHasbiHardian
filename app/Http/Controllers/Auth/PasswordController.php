@@ -26,9 +26,9 @@ class PasswordController extends Controller
         ]);
 
         // Cek role untuk redirect
-        if ($user->role === 'admin') {
+        if ($user->siAdmin()) {
             return redirect()->route('dashboard.admin')->with('status', 'password-updated');
-        } elseif ($user->role === 'public') {
+        } elseif ($user->isPublic()) {
             return redirect()->route('dashboard.user')->with('status', 'password-updated');
         }
 

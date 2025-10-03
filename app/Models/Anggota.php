@@ -8,9 +8,11 @@ class Anggota extends Model
 {
     protected $table = 'anggota';
     protected $primaryKey = 'id_anggota';
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
+        'id_anggota',
         'nama_depan',
         'nama_belakang',
         'gelar_depan',
