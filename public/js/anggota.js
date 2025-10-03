@@ -145,5 +145,22 @@ document.getElementById('form-edit-anggota').addEventListener('submit', async fu
     }
 });
 
+// Hapus anggota
+window.deleteAnggota = async function(id_anggota, nama) {
+    if (!confirm(`Hapus anggota ${nama}?`)) return;
+    let token = document.querySelector('input[name="_token"]').value;
+    let res = await fetch(`/dashboard-admin/kelola-anggota/${id_anggota}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+        anggotaList = anggotaList.filter(a => String(a.id_anggota) !== String(id_anggota));
+        renderAnggota();
+        showNotif(`Anggota ${nama} dihapus!`);
+    } else {
+        showNotif(`Gagal hapus anggota ${nama}!`, 'red');
+    }
+};
+
 // Init
 window.addEventListener('DOMContentLoaded', fetchAnggota);
