@@ -87,6 +87,63 @@ document.getElementById('form-anggota').addEventListener('submit', async functio
     }
 });
 
+// Modal edit
+const modalEdit = document.getElementById('modal-edit-anggota');
+document.getElementById('close-edit-modal-btn').onclick = () => modalEdit.classList.add('hidden');
+
+window.showEditModal = function(id_anggota) {
+    let a = anggotaList.find(x => String(x.id_anggota) === String(id_anggota));
+    if (!a) return;
+
+    // simpan id lama di hidden input
+    document.getElementById('edit-anggota-id').value = a.id_anggota;
+
+    // isi input yang bisa diedit
+    document.getElementById('edit-anggota-id').value = a.id_anggota;
+    document.getElementById('edit-id_anggota').value = a.id_anggota;
+    document.getElementById('edit-nama_depan').value = a.nama_depan;
+    document.getElementById('edit-nama_belakang').value = a.nama_belakang;
+    document.getElementById('edit-gelar_depan').value = a.gelar_depan;
+    document.getElementById('edit-gelar_belakang').value = a.gelar_belakang;
+    document.getElementById('edit-jabatan').value = a.jabatan;
+    document.getElementById('edit-status_pernikahan').value = a.status_pernikahan;
+    document.getElementById('edit-jumlah_anak').value = a.jumlah_anak;
+    modalEdit.classList.remove('hidden');
+};
+
+// Update anggota
+document.getElementById('form-edit-anggota').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    let old_id = document.getElementById('edit-anggota-id').value; // ID lama
+    let formData = new FormData(this);
+    formData.append('_method', 'PUT');
+
+    let token = document.querySelector('input[name="_token"]').value;
+    let updateBtn = this.querySelector('button[type="submit"]');
+    updateBtn.disabled = true;
+    let oldText = updateBtn.textContent;
+    updateBtn.textContent = 'Updating...';
+
+    let res = await fetch(`/dashboard-admin/kelola-anggota/${old_id}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+        body: formData
+    });
+
+    updateBtn.disabled = false;
+    updateBtn.textContent = oldText;
+
+    if (res.ok) {
+        let updated = await res.json();
+        let idx = anggotaList.findIndex(x => String(x.id_anggota) === String(old_id));
+        if (idx !== -1) anggotaList[idx] = updated;
+        renderAnggota();
+        modalEdit.classList.add('hidden');
+        showNotif('Data anggota diperbarui!');
+    } else {
+        showNotif('Update gagal!', 'red');
+    }
+});
 
 // Init
 window.addEventListener('DOMContentLoaded', fetchAnggota);
