@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\KomponenGajiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,14 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::delete('/dashboard-admin/kelola-anggota/{anggota}', [AnggotaController::class, 'destroy'])->name('anggota.destroy');
 
     Route::get('/api/anggota-all', [AnggotaController::class, 'all']);
+    
+    // Kelola Komponen Gaji
+    Route::get('/dashboard-admin/kelola-komponen-gaji', [KomponenGajiController::class, 'index'])->name('komponen-gaji.index');
+    Route::post('/dashboard-admin/kelola-komponen-gaji', [KomponenGajiController::class, 'store'])->name('komponen-gaji.store');
+    Route::put('/dashboard-admin/kelola-komponen-gaji/{komponen_gaji}', [KomponenGajiController::class, 'update'])->name('komponen-gaji.update');
+    Route::delete('/dashboard-admin/kelola-komponen-gaji/{komponen_gaji}', [KomponenGajiController::class, 'destroy'])->name('komponen-gaji.destroy');
+
+    Route::get('/api/komponen-gaji-all', [KomponenGajiController::class, 'all']);
 
 });
 

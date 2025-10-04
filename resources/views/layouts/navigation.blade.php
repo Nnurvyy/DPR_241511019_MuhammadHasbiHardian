@@ -21,10 +21,10 @@
                         <x-nav-link :href="route('anggota.index')" :active="request()->routeIs('anggota.*')">
                             Kelola Anggota DPR
                         </x-nav-link>
-                        {{-- <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
-                            Kelola Course
+                         <x-nav-link :href="route('komponen-gaji.index')" :active="request()->routeIs('komponen-gaji.*')">
+                            Kelola Komponen Gaji
                         </x-nav-link>
-                    @else
+                {{--@else
                         <x-nav-link :href="route('dashboard.user')" :active="request()->routeIs('dashboard.user')">
                             Home
                         </x-nav-link>

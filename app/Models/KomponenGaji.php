@@ -10,7 +10,10 @@ class KomponenGaji extends Model
     protected $primaryKey = 'id_komponen_gaji';
     public $timestamps = false;
 
+    public $incrementing = false;
+
     protected $fillable = [
+        'id_komponen_gaji',
         'nama_komponen',
         'kategori',
         'jabatan',

@@ -99,7 +99,6 @@ window.showEditModal = function(id_anggota) {
     document.getElementById('edit-anggota-id').value = a.id_anggota;
 
     // isi input yang bisa diedit
-    document.getElementById('edit-anggota-id').value = a.id_anggota;
     document.getElementById('edit-id_anggota').value = a.id_anggota;
     document.getElementById('edit-nama_depan').value = a.nama_depan;
     document.getElementById('edit-nama_belakang').value = a.nama_belakang;
