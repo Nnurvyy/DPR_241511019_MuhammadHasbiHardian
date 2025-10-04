@@ -142,7 +142,22 @@ document.getElementById('form-edit-komponen-gaji').addEventListener('submit', as
     }
 });
 
-
+// Hapus komponen gaji
+window.deleteKomponenGaji = async function(id_komponen_gaji, nama) {
+    if (!confirm(`Hapus komponen gaji ${nama}?`)) return;
+    let token = document.querySelector('input[name="_token"]').value;
+    let res = await fetch(`/dashboard-admin/kelola-komponen-gaji/${id_komponen_gaji}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+        komponenGajiList = komponenGajiList.filter(a => String(a.id_komponen_gaji) !== String(id_komponen_gaji));
+        renderKomponenGaji();
+        showNotif(`Komponen gaji ${nama} dihapus!`);
+    } else {
+        showNotif(`Gagal hapus komponen gaji ${nama}!`, 'red');
+    }
+};
 
 // Init
 window.addEventListener('DOMContentLoaded', fetchKomponenGaji);
