@@ -74,7 +74,24 @@
                         </div>
                     </div>
 
-                    
+                    {{-- Tabel penggajian --}}
+                    <table id="table-penggajian" class="w-full mb-2 border-collapse border border-gray-300 dark:border-gray-700">
+                        <thead class="bg-gray-100 dark:bg-gray-900">
+                            <tr>
+                                <th class="border px-2 py-1">ID Anggota</th>
+                                <th class="border px-2 py-1">Gelar Depan</th>
+                                <th class="border px-2 py-1">Nama Depan</th>
+                                <th class="border px-2 py-1">Nama Belakang</th>
+                                <th class="border px-2 py-1">Gelar Belakang</th>
+                                <th class="border px-2 py-1">Jabatan</th>
+                                <th class="border px-2 py-1">Take Home Pay</th>
+                                <th class="border px-2 py-1">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Diisi JS --}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
