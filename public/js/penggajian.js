@@ -168,6 +168,40 @@ function showAddKomponenForm(id_anggota, anggotaData, existingKomponenIds) {
     document.getElementById('add-komponen-form').classList.remove('hidden');
 }
 
+async function showDetail(id_anggota) {
+    try {
+        let res = await fetch(`/api/penggajian/${id_anggota}`);
+        if (!res.ok) {
+            // Jika crash, tampilkan notifikasi, bukan alert
+            throw new Error('Gagal memuat detail, server mengalami error.');
+        }
+        
+        let data = await res.json();
+
+        let detailContent = document.getElementById('detail-content');
+
+        // Memastikan data.komponen ada sebelum di-map
+        let komponenHtml = (data.komponen || []).map(k => `
+            <li>${k.nama_komponen}: ${formatRupiah(k.nominal)}</li>
+        `).join('');
+
+        // Menambahkan `?? 0` untuk mencegah error jika data tidak ada
+        detailContent.innerHTML = `
+            <p><strong>ID Anggota:</strong> ${data.anggota.id_anggota}</p>
+            <p><strong>Nama Lengkap:</strong> ${data.anggota.gelar_depan || ''} ${data.anggota.nama_depan} ${data.anggota.nama_belakang || ''} ${data.anggota.gelar_belakang || ''}</p>
+            <p><strong>Jabatan:</strong> ${data.anggota.jabatan}</p>
+            <hr class="my-2 dark:border-gray-600">
+            <p><strong>Rincian Komponen Gaji:</strong></p>
+            <ul class="list-disc list-inside pl-5">${komponenHtml}</ul>
+            <hr class="my-2 dark:border-gray-600">
+            <p class="font-bold"><strong>Take Home Pay:</strong> ${formatRupiah(data.take_home_pay)}</p>
+        `;
+
+        document.getElementById('modal-detail').classList.remove('hidden');
+    } catch (error) {
+        showNotif(error.message, 'red');
+    }
+}
 
 // Tampilkan modal edit penggajian untuk anggota tertentu
 window.showEditModal = async function(id_anggota) {
