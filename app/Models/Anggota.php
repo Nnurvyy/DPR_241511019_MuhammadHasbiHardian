@@ -19,6 +19,7 @@ class Anggota extends Model
         'gelar_belakang',
         'jabatan',
         'status_pernikahan',
+        'jumlah_anak',
     ];
 
     // Relasi ke penggajian

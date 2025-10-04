@@ -11,14 +11,37 @@ class AnggotaController extends Controller
     {
         return view('kelola-anggota');
     }
-
-    // API untuk fetch semua anggota (untuk anggota.js)
-    public function all()
+    public function index2()
     {
-        return response()->json(Anggota::all());
+        return view('anggota-public');
     }
 
-    // Store anggota baru
+
+    // API untuk fetch semua anggota (untuk anggota.js)
+    public function all(Request $request)
+    {
+        $q = $request->q;
+        $query = Anggota::query(); // Mulai dengan query builder
+
+        if ($q) {
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_depan', 'ilike', "%$q%")
+                    ->orWhere('nama_belakang', 'ilike', "%$q%")
+                    ->orWhere('gelar_depan', 'ilike', "%$q%")
+                    ->orWhere('gelar_belakang', 'ilike', "%$q%")
+                    ->orWhere('jumlah_anak', 'ilike', "%$q%")
+
+                    // Sama seperti kasus penggajian, kolom Enum dan Integer perlu di-CAST
+                    ->orWhereRaw('CAST(jabatan AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(id_anggota AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(status_pernikahan AS TEXT) ilike ?', ["%$q%"]);
+            });
+        }
+        return response()->json($query->get());
+    }
+
+
+    // Simpan anggota baru
     public function store(Request $request)
     {
         $nextId = Anggota::max('id_anggota') + 1;
@@ -36,6 +59,7 @@ class AnggotaController extends Controller
             return response()->json($anggota);
         }
     }
+
 
     // Update anggota
     public function update(Request $request, Anggota $anggota)
@@ -55,6 +79,7 @@ class AnggotaController extends Controller
         }
     }
 
+    
     // Hapus anggota
     public function destroy(Anggota $anggota)
     {

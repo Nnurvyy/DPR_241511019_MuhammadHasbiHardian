@@ -1,23 +1,24 @@
-# Muhammad Hasbi Hardian (241511019)
-## Mission 4
+# DPR_019_MuhammadHasbiHardian
+## ETS
 ---
 
-# Akademik
+# Sistem Informasi Penggajian Anggota DPR
 
-Akademik adalah aplikasi manajemen akademik berbasis web yang dibangun menggunakan Laravel dan PostgreSQL. Aplikasi ini mendukung pengelolaan data mahasiswa (students), mata kuliah (courses), serta pendaftaran mata kuliah (enroll) dengan fitur otentikasi dan otorisasi berbasis role (admin & student).
+Sistem Informasi Penggajian Anggota DPR adalah aplikasi web yang dibangun menggunakan framework Laravel untuk mengelola data anggota DPR beserta rincian gajinya. Aplikasi ini menerapkan sistem Role-Based Access Control (RBAC) yang memisahkan fungsionalitas antara pengguna Admin dan Public.
+
+Aplikasi ini dibuat sebagai demonstrasi implementasi operasi CRUD (Create, Read, Update, Delete) modern, pencarian data dinamis tanpa reload halaman (AJAX), validasi real-time di sisi klien, dan kalkulasi data yang kompleks di sisi server.
 
 ---
 
 ## ✨ Fitur Utama
 
 - **Role Admin**
-  - Kelola data mahasiswa (CRUD)
-  - Kelola data mata kuliah (CRUD)
-  - Pencarian dan sorting mahasiswa & mata kuliah
-- **Role Student**
-  - Melihat daftar mata kuliah
-  - Enroll (mendaftar) ke mata kuliah
-  - Melihat daftar mata kuliah yang diambil
+  - Kelola data anggota DPR (CRUD)
+  - Kelola data komponen gaji DPR (CRUD)
+  - Kelola data penggajian DPR (CRUD)
+- **Role Public**
+  - Melihat daftar anggota DPR
+  - Melihat detail penggajian anggota DPR
 
 ---
 
@@ -50,13 +51,13 @@ cp .env.example .env
 ```
 
 ### 3. Siapkan Database 
-- Buat database PostgreSQL baru, misal: akademik
+- Buat database PostgreSQL baru, misal: dpr
 - Pastikan konfigurasi DB di file .env sudah sesuai
 ```sh
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=akademik
+DB_DATABASE=dpr
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 ```
@@ -73,15 +74,13 @@ npm install
 php artisan key:generate
 ```
 
-### 6. Jalankan Migrasi Database
-```sh
-php artisan migrate
-```
+### 6. Create Table Database
+Gunakan link ini untuk export .sql 
+[https://dbdiagram.io/d/Proyek-3-Gaji-DPR-68dba08cd2b621e4228f3e5d](https://dbdiagram.io/d/Proyek-3-Gaji-DPR-68dba08cd2b621e4228f3e5d)
 
-### 7. Jalankan Seeder (Akun Admin, Student, dan Course Otomatis Dibuat)
-```sh
-php artisan db:seed
-```
+### 7. Insert Data ke Database
+Gunakan link ini untuk data dummy
+[https://gist.github.com/alifiharafi/5eca278f487c5e3ebe607f30d777d925](https://gist.github.com/alifiharafi/5eca278f487c5e3ebe607f30d777d925)
 
 ### 8. Jalankan Build Frontend
 ```sh 
@@ -98,67 +97,16 @@ php -S 127.0.0.1:9000 -t public
 ```
 
 ### 10. Login Menggunakan Akun Seeder
-Gunakan akun yang sudah disediakan di seeder, misal:
+Gunakan akun yang sudah disediakan, misal:
 
 
 - Admin
-  Email: admin@gmail.com
+  Username: admin
   Password: admin123
 
 
-- Student
-  Email: finn@gmail.com
-  Password: password123
+- Public
+  Username: citizen
+  Password: public123
 
-Lihat file seeder (database/seeders/StudentUserSeeder.php) untuk daftar akun student lainnya
-
----
-
-# Screenshoot Program
-## 1. Login
-![Login](public/img/login.png)
-
-## 2. Dashboard Admin
-![Dashboard Admin](public/img/dashboard-admin.png)
-
-## 3. Dashboard Student
-![Dashboard Student](public/img/dashboard-student.png)
-
-## 4. Kelola Mahasiswa
-![Kelola Mahasiswa](public/img/kelola-students.png)
-
-### - Create Mahasiswa
-![Create Student](public/img/create-student.png)
-![Create Student Error](public/img/create-student-error.png)
-
-### - Edit Mahasiswa
-![Edit Student](public/img/edit-student.png)
-
-### - Delete Mahasiswa
-![Delete Student](public/img/delete-student.png)
-
-## 5. Kelola Mata Kuliah (Course)
-![Kelola Courses](public/img/kelola-courses.png)
-
-### - Create Course
-![Create Course](public/img/create-course.png)
-
-### - Edit Course
-![Edit Course](public/img/edit-course.png)
-
-### - Delete Course
-![Delete Course](public/img/delete-course.png)
-
-## 6. All Courses (Student)
-![All Courses](public/img/all-courses.png)
-
-## 7. My Courses (Student)
-![My Courses](public/img/my-courses.png)
-
-## 8. Profile
-![Profile 1](public/img/profile1.png)
-![Profile 2](public/img/profile2.png)
-
-## 9. Logout
-![Logout](public/img/logout.png)
 

@@ -16,9 +16,9 @@ class HomeController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        if ($user && $user->isAdmin()) {
+        if ($user && $user->role === 'Admin') {
             return redirect()->route('dashboard.admin');
-        } elseif ($user && $user->isPublic()) {
+        } elseif ($user && $user->role === 'Public') {
             return redirect()->route('dashboard.user');
         }
         return redirect('/');

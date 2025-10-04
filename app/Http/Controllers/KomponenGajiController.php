@@ -12,11 +12,29 @@ class KomponenGajiController extends Controller
         return view('kelola-komponen-gaji');
     }
 
+
     // API untuk fetch semua komponen gaji (untuk komponen_gaji.js)
-    public function all()
+    public function all(Request $request)
     {
-        return response()->json(KomponenGaji::all());
+        $q = $request->q;
+        $query = KomponenGaji::query(); // Mulai dengan query builder
+
+        if ($q) {
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_komponen', 'ilike', "%$q%")
+
+                    // Kolom Enum, Integer, dan Numeric perlu di-CAST ke TEXT
+                    ->orWhereRaw('CAST(kategori AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(jabatan AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(nominal AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(satuan AS TEXT) ilike ?', ["%$q%"])
+                    ->orWhereRaw('CAST(id_komponen_gaji AS TEXT) ilike ?', ["%$q%"]);
+            });
+        }
+
+        return response()->json($query->get());
     }
+
 
     // Store komponen gaji baru
     public function store(Request $request)
@@ -35,6 +53,7 @@ class KomponenGajiController extends Controller
         }
     }
 
+
     // Update komponen gaji
     public function update(Request $request, KomponenGaji $komponenGaji)
     {
@@ -51,6 +70,7 @@ class KomponenGajiController extends Controller
         }
     }
 
+    
     // Hapus komponen gaji
     public function destroy(KomponenGaji $komponenGaji)
     {

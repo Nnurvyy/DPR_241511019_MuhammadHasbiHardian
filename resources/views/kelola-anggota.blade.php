@@ -1,66 +1,70 @@
-{{-- filepath: resources/views/kelola-mahasiswa.blade.php --}}
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-black border border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-xl font-semibold mt-8 mb-2">Anggota</h3>
-                    <div class="mb-4 flex items-center gap-2">
-                        <button id="open-modal-btn" class="px-4 py-2 bg-blue-600 text-white rounded">Add Anggota</button>
+                    
+                    <h3 class="text-xl font-semibold mb-4">Kelola Anggota</h3>
+
+                    <div class="flex justify-between items-center mb-4">
+                        {{-- Bagian Kiri: Tombol Tambah --}}
+                        <div>
+                            <button id="open-modal-btn" class="px-4 py-2 bg-green-600 text-white rounded">Tambah Anggota</button>
+                        </div>
+                        
+                        {{-- Bagian Kanan: Pencarian --}}
+                        <div class="flex items-center gap-2">
+                            <input id="search-anggota" type="text" placeholder="Cari Nama/Jabatan/ID..." class="border rounded px-2 py-1 dark:bg-gray-800 dark:text-white" />
+                            <button id="search-button-anggota" class="px-4 py-2 bg-blue-600 text-white rounded">Cari</button>
+                        </div>
                     </div>
 
-                    {{-- Modal Create Anggota --}}
+                    {{-- MODAL UNTUK TAMBAH ANGGOTA BARU --}}
                     <div id="modal-anggota" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-                        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-md w-full">
-                            <h3 class="text-lg font-bold mb-4">Add Anggota</h3>
-                            <form id="form-anggota" class="space-y-4">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                            <h3 class="text-lg font-bold mb-4">Tambah Anggota Baru</h3>
+                            <form id="form-anggota" class="space-y-4" novalidate>
                                 @csrf
                                 <div>
-                                    <x-input-label for="nama_depan" :value="__('Nama Depan')" />
-                                    <x-text-input id="nama_depan" name="nama_depan" type="text"
-                                        class="mt-1 block w-full"
-                                        autofocus autocomplete="nama_depan" />
-                                </div>
-
-                                <div>
-                                    <x-input-label for="nama_belakang" :value="__('Nama Belakang')" />
-                                    <x-text-input id="nama_belakang" name="nama_belakang" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="nama_belakang" />
-                                </div>
-
-                                <div>
-                                    <x-input-label for="gelar_depan" :value="__('Gelar Depan')" />
-                                    <x-text-input id="gelar_depan" name="gelar_depan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="gelar_depan" />
+                                    <label for="nama_depan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Depan</label>
+                                    <input type="text" id="nama_depan" name="nama_depan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="gelar_belakang" :value="__('Gelar Belakang')" />
-                                    <x-text-input id="gelar_belakang" name="gelar_belakang" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="gelar_belakang" />
+                                    <label for="nama_belakang" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Belakang</label>
+                                    <input type="text" id="nama_belakang" name="nama_belakang" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="jabatan" :value="__('Jabatan')" />
-                                    <x-text-input id="jabatan" name="jabatan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="jabatan" />
+                                    <label for="gelar_depan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gelar Depan (Opsional)</label>
+                                    <input type="text" id="gelar_depan" name="gelar_depan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="status_pernikahan" :value="__('Status Pernikahan')" />
-                                    <x-text-input id="status_pernikahan" name="status_pernikahan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="status_pernikahan" />
+                                    <label for="gelar_belakang" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gelar Belakang (Opsional)</label>
+                                    <input type="text" id="gelar_belakang" name="gelar_belakang" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="jumlah_anak" :value="__('Jumlah Anak')" />
-                                    <x-text-input id="jumlah_anak" name="jumlah_anak" type="number"
-                                        class="mt-1 block w-full"
-                                        autocomplete="jumlah_anak" />
+                                    <label for="jabatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
+                                    <select id="jabatan" name="jabatan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
+                                        <option value="">-- Pilih Jabatan --</option>
+                                        <option value="Ketua">Ketua</option>
+                                        <option value="Wakil Ketua">Wakil Ketua</option>
+                                        <option value="Anggota">Anggota</option>
+                                    </select>
                                 </div>
-
-                                <div class="flex gap-2 mt-2">
+                                <div>
+                                    <label for="status_pernikahan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Pernikahan</label>
+                                    <select id="status_pernikahan" name="status_pernikahan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
+                                        <option value="">-- Pilih Status --</option>
+                                        <option value="Kawin">Kawin</option>
+                                        <option value="Belum Kawin">Belum Kawin</option>
+                                        <option value="Cerai Hidup">Cerai Hidup</option>
+                                        <option value="Cerai Mati">Cerai Mati</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="jumlah_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Anak</label>
+                                    <input type="number" id="jumlah_anak" name="jumlah_anak" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white" value="0" min="0">
+                                </div>
+                                <div class="flex gap-2 mt-4">
                                     <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded">Save</button>
                                     <button type="button" id="close-modal-btn" class="px-3 py-1 bg-gray-400 text-white rounded">Cancel</button>
                                 </div>
@@ -68,72 +72,66 @@
                         </div>
                     </div>
 
-                    {{-- Modal Edit Anggota --}}
+
+                    {{-- MODAL UNTUK EDIT ANGGOTA --}}
                     <div id="modal-edit-anggota" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-                        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-md w-full">
-                            <h3 class="text-lg font-bold mb-4">Edit Anggota</h3>
-                            <form id="form-edit-anggota" class="space-y-4">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                            <h3 class="text-lg font-bold mb-4">Edit Data Anggota</h3>
+                            <form id="form-edit-anggota" class="space-y-4" novalidate>
                                 @csrf
-                                <input type="hidden" id="edit-anggota-id" name="anggota_id">
+                                <input type="hidden" id="edit-anggota-id">
                                 <div>
-                                    <x-input-label for="edit-id_anggota" :value="__('ID Anggota')" />
-                                    <x-text-input id="edit-id_anggota" name="id_anggota" type="number"
-                                        class="mt-1 block w-full"
-                                        autofocus autocomplete="id_anggota" />
+                                    <label for="edit-id_anggota" class="block text-sm font-medium text-gray-700 dark:text-gray-300">ID Anggota</label>
+                                    <input type="text" id="edit-id_anggota" name="id_anggota" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="edit-nama_depan" :value="__('Nama Depan')" />
-                                    <x-text-input id="edit-nama_depan" name="nama_depan" type="text"
-                                        class="mt-1 block w-full"
-                                        autofocus autocomplete="nama_depan" />
-                                </div>
-
-                                <div>
-                                    <x-input-label for="edit-nama_belakang" :value="__('Nama Belakang')" />
-                                    <x-text-input id="edit-nama_belakang" name="nama_belakang" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="nama_belakang" />
-                                </div>
-
-                                <div>
-                                    <x-input-label for="edit-gelar_depan" :value="__('Gelar Depan')" />
-                                    <x-text-input id="edit-gelar_depan" name="gelar_depan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="gelar_depan" />
+                                    <label for="edit-nama_depan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Depan</label>
+                                    <input type="text" id="edit-nama_depan" name="nama_depan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="edit-gelar_belakang" :value="__('Gelar Belakang')" />
-                                    <x-text-input id="edit-gelar_belakang" name="gelar_belakang" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="gelar_belakang" />
+                                    <label for="edit-nama_belakang" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Belakang</label>
+                                    <input type="text" id="edit-nama_belakang" name="nama_belakang" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="edit-jabatan" :value="__('Jabatan')" />
-                                    <x-text-input id="edit-jabatan" name="jabatan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="jabatan" />
+                                    <label for="edit-gelar_depan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gelar Depan (Opsional)</label>
+                                    <input type="text" id="edit-gelar_depan" name="gelar_depan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="edit-status_pernikahan" :value="__('Status Pernikahan')" />
-                                    <x-text-input id="edit-status_pernikahan" name="status_pernikahan" type="text"
-                                        class="mt-1 block w-full"
-                                        autocomplete="status_pernikahan" />
+                                    <label for="edit-gelar_belakang" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gelar Belakang (Opsional)</label>
+                                    <input type="text" id="edit-gelar_belakang" name="gelar_belakang" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
                                 </div>
                                 <div>
-                                    <x-input-label for="edit-jumlah_anak" :value="__('Jumlah Anak')" />
-                                    <x-text-input id="edit-jumlah_anak" name="jumlah_anak" type="number"
-                                        class="mt-1 block w-full"
-                                        autocomplete="jumlah_anak" />
+                                    <label for="edit-jabatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jabatan</label>
+                                    <select id="edit-jabatan" name="jabatan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
+                                        <option value="">-- Pilih Jabatan --</option>
+                                        <option value="Ketua">Ketua</option>
+                                        <option value="Wakil Ketua">Wakil Ketua</option>
+                                        <option value="Anggota">Anggota</option>
+                                    </select>
                                 </div>
-                                
-                                <div class="flex gap-2 mt-2">
-                                    <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded">Update</button>
+                                <div>
+                                    <label for="edit-status_pernikahan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Pernikahan</label>
+                                    <select id="edit-status_pernikahan" name="status_pernikahan" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white">
+                                        <option value="">-- Pilih Status --</option>
+                                        <option value="Kawin">Kawin</option>
+                                        <option value="Belum Kawin">Belum Kawin</option>
+                                        <option value="Cerai Hidup">Cerai Hidup</option>
+                                        <option value="Cerai Mati">Cerai Mati</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="edit-jumlah_anak" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Anak</label>
+                                    <input type="number" id="edit-jumlah_anak" name="jumlah_anak" class="mt-1 block w-full border rounded dark:bg-gray-700 dark:text-white" min="0">
+                                </div>
+                                <div class="flex gap-2 mt-4">
+                                    <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded">Update</button>
                                     <button type="button" id="close-edit-modal-btn" class="px-3 py-1 bg-gray-400 text-white rounded">Cancel</button>
                                 </div>
                             </form>
                         </div>
                     </div>
 
+                    {{-- Tabel Anggota --}}
                     <table id="table-anggota" class="w-full mb-2 border-collapse border border-gray-300 dark:border-gray-700">
                         <thead class="bg-gray-100 dark:bg-gray-900">
                             <tr>
@@ -158,6 +156,6 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('js/anggota.js') }}"></script>
+        <script type="module" src="{{ asset('js/anggota.js') }}"></script>
     @endpush
 </x-app-layout>

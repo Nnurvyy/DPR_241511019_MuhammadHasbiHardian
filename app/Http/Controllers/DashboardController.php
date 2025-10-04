@@ -9,7 +9,6 @@ class DashboardController extends Controller{
         return view('dashboard-admin');
     }
 
-
     public function dashboardUser(Request $request)
     {
         return view('dashboard-user');

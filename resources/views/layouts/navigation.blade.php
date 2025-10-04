@@ -24,16 +24,19 @@
                          <x-nav-link :href="route('komponen-gaji.index')" :active="request()->routeIs('komponen-gaji.*')">
                             Kelola Komponen Gaji
                         </x-nav-link>
-                {{--@else
+                         <x-nav-link :href="route('penggajian.index')" :active="request()->routeIs('penggajian.*')">
+                            Kelola Penggajian
+                        </x-nav-link>
+                @else
                         <x-nav-link :href="route('dashboard.user')" :active="request()->routeIs('dashboard.user')">
                             Home
                         </x-nav-link>
-                        <x-nav-link :href="route('courses.list')" :active="request()->routeIs('courses.list')">
-                            All Courses
+                        <x-nav-link :href="route('anggota.index2')" :active="request()->routeIs('anggota.*')">
+                            Lihat Anggota
                         </x-nav-link>
-                        <x-nav-link :href="route('courses.my')" :active="request()->routeIs('courses.my')">
-                            My Courses
-                        </x-nav-link> --}}
+                        <x-nav-link :href="route('penggajian.index2')" :active="request()->routeIs('penggajian.*')">
+                            Lihat Penggajian
+                        </x-nav-link>
                     @endif
                 </div>
             </div>

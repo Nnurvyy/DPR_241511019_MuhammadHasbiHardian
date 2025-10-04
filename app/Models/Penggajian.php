@@ -8,9 +8,10 @@ class Penggajian extends Model
 {
     protected $table = 'penggajian';
     public $timestamps = false;
+
     public $incrementing = false; // karena PK composite
 
-    protected $primaryKey = ['id_komponen_gaji', 'id_anggota'];
+    // protected $primaryKey = ['id_komponen_gaji', 'id_anggota'];
 
     protected $fillable = [
         'id_komponen_gaji',
