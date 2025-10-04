@@ -85,6 +85,63 @@ document.getElementById('form-komponen-gaji').addEventListener('submit', async f
     }
 });
 
+// Modal edit
+const modalEdit = document.getElementById('modal-edit-komponen-gaji');
+document.getElementById('close-edit-modal-btn').onclick = () => modalEdit.classList.add('hidden');
+
+window.showEditModal = function(id_komponen_gaji) {
+    let a = komponenGajiList.find(x => String(x.id_komponen_gaji) === String(id_komponen_gaji));
+    if (!a) return;
+
+    document.getElementById('edit-komponen_gaji_id').value = a.id_komponen_gaji;
+
+    // isi input yang bisa diedit
+    document.getElementById('edit-id_komponen_gaji').value = a.id_komponen_gaji;
+    document.getElementById('edit-nama_komponen').value = a.nama_komponen;
+    document.getElementById('edit-kategori').value = a.kategori;
+    document.getElementById('edit-jabatan').value = a.jabatan;
+    document.getElementById('edit-nominal').value = a.nominal;
+    document.getElementById('edit-satuan').value = a.satuan;
+    modalEdit.classList.remove('hidden');
+};
+
+// Update komponen gaji
+document.getElementById('form-edit-komponen-gaji').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    let old_id = document.getElementById('edit-komponen_gaji_id').value; // ID lama
+    let formData = new FormData(this);
+    formData.append('_method', 'PUT');
+
+    let token = document.querySelector('input[name="_token"]').value;
+    let updateBtn = this.querySelector('button[type="submit"]');
+    updateBtn.disabled = true;
+    let oldText = updateBtn.textContent;
+    updateBtn.textContent = 'Updating...';
+
+    let res = await fetch(`/dashboard-admin/kelola-komponen-gaji/${old_id}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+        body: formData
+    });
+
+    updateBtn.disabled = false;
+    updateBtn.textContent = oldText;
+
+    if (res.ok) {
+        let updated = await res.json();
+        let idx = komponenGajiList.findIndex(x => String(x.id_komponen_gaji) === String(old_id));
+        if (idx !== -1) komponenGajiList[idx] = updated;
+        renderKomponenGaji();
+        modalEdit.classList.add('hidden');
+        showNotif('Data komponen gaji diperbarui!');
+    } else {
+        let errorText = await res.text();
+        alert('Gagal menambah komponen gaji:\n' + errorText);
+        console.error(errorText);
+        showNotif('Gagal menambah komponen gaji!', 'red');
+    }
+});
+
 
 
 // Init
