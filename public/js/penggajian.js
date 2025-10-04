@@ -169,7 +169,6 @@ function showAddKomponenForm(id_anggota, anggotaData, existingKomponenIds) {
 }
 
 
-
 // Tampilkan modal edit penggajian untuk anggota tertentu
 window.showEditModal = async function(id_anggota) {
     try {
@@ -246,7 +245,61 @@ window.editKomponenGaji = function(id_anggota, id_komponen_gaji) {
     .catch(() => showNotif('Gagal update komponen gaji!', 'red'));
 };
 
+// Hapus komponen gaji (per anggota & komponen)
+window.deleteKomponenGaji = async function(id_anggota, id_komponen_gaji, nama_komponen) {
+    if (!confirm(`Yakin hapus komponen ${nama_komponen}?`)) return;
 
+    try {
+        let res = await fetch(`/dashboard-admin/kelola-penggajian/${id_anggota}/${id_komponen_gaji}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!res.ok) {
+            let errorText = await res.text();
+            alert('Gagal menghapus komponen:\n' + errorText);
+            showNotif('Failed to delete component!', 'red');
+            console.error(errorText);
+        }
+
+        showNotif('Komponen gaji berhasil dihapus!');
+        showEditModal(id_anggota);
+        fetchPenggajian();
+
+    } catch (error) {
+        showNotif(error.message, 'red');
+    }
+}
+
+
+
+// Tutup modal edit
+document.getElementById('close-modal-edit').onclick = () => document.getElementById('modal-edit').classList.add('hidden');
+
+
+async function deletePenggajian(id_anggota) {
+    if (confirm(`Apakah Anda yakin ingin menghapus semua data penggajian untuk anggota ID ${id_anggota}?`)) {
+        try {
+            let res = await fetch(`/dashboard-admin/kelola-penggajian/${id_anggota}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!res.ok) throw new Error('Gagal menghapus data');
+            
+            showNotif('Data penggajian berhasil dihapus!');
+            fetchPenggajian(); 
+        } catch (error) {
+            showNotif(error.message, 'red');
+        }
+    }
+}
 
 
 // Event Listeners
