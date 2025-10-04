@@ -170,6 +170,85 @@ function showAddKomponenForm(id_anggota, anggotaData, existingKomponenIds) {
 
 
 
+// Tampilkan modal edit penggajian untuk anggota tertentu
+window.showEditModal = async function(id_anggota) {
+    try {
+        let res = await fetch(`/api/penggajian/${id_anggota}`);
+        if (!res.ok) throw new Error('Gagal memuat detail untuk diedit');
+        
+        let data = await res.json();
+
+        document.getElementById('edit-header').innerHTML = `
+            <p><strong>ID Anggota:</strong> ${data.anggota.id_anggota}</p>
+            <p><strong>Nama Lengkap:</strong> ${data.anggota.gelar_depan || ''} ${data.anggota.nama_depan} ${data.anggota.nama_belakang || ''} ${data.anggota.gelar_belakang || ''}</p>
+            <p><strong>Jabatan:</strong> ${data.anggota.jabatan}</p>
+        `;
+
+        let komponenHtml = data.komponen.map(k => {
+            const escapedNama = String(k.nama_komponen).replace(/'/g, "\\'");
+
+            return `
+                <li class="flex items-center justify-between border-b py-1 dark:border-gray-600">
+                    <span>${k.nama_komponen}: ${formatRupiah(k.nominal)}</span>
+                    <span>
+                        <button onclick="deleteKomponenGaji('${id_anggota}', '${k.id_komponen_gaji}', '${escapedNama}')" class="px-2 py-1 bg-red-600 rounded text-white text-xs">Hapus</button>
+                    </span>
+                </li>
+            `;
+        }).join('');
+        
+        document.getElementById('edit-komponen-list').innerHTML = `<ul>${komponenHtml || '<li class="text-gray-500">Belum ada komponen.</li>'}</ul>`;
+        
+        document.getElementById('edit-take-home-pay').innerHTML = `<strong>Take Home Pay:</strong> ${formatRupiah(data.take_home_pay)}`;
+        document.getElementById('add-komponen-form').classList.add('hidden');
+        document.getElementById('modal-edit').classList.remove('hidden');
+
+        document.getElementById('add-komponen-btn').onclick = () => {
+            const anggotaData = data.anggota; // Kirim seluruh objek anggota
+            const existingKomponenIds = data.komponen.map(k => String(k.id_komponen_gaji));
+            
+            showAddKomponenForm(id_anggota, anggotaData, existingKomponenIds);
+        };
+        
+    } catch (error) {
+        showNotif(error.message, 'red');
+    }
+};
+
+window.editKomponenGaji = function(id_anggota, id_komponen_gaji) {
+    const komponen = komponenGajiList.find(k => String(k.id_komponen_gaji) === String(id_komponen_gaji));
+    if (!komponen) return;
+    const nominalBaru = prompt(`Edit nominal untuk ${komponen.nama_komponen}:`, komponen.nominal);
+    if (nominalBaru === null) return; // Cancel
+
+    fetch(`/api/penggajian/${id_anggota}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            id_komponen_gaji: id_komponen_gaji,
+            nominal: nominalBaru
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showNotif('Nominal komponen gaji berhasil diupdate!');
+            showEditModal(id_anggota);
+            fetchPenggajian();
+        } else {
+            showNotif('Gagal update komponen gaji!', 'red');
+        }
+    })
+    .catch(() => showNotif('Gagal update komponen gaji!', 'red'));
+};
+
+
+
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Tombol dan event modal
