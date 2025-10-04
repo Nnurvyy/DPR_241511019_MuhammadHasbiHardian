@@ -110,7 +110,23 @@
                         </div>
                     </div>
 
-                    
+                    <table id="table-komponen-gaji" class="w-full mb-2 border-collapse border border-gray-300 dark:border-gray-700">
+                        <thead class="bg-gray-100 dark:bg-gray-900">
+                            <tr>
+                                <th class="border border-gray-400 px-2 py-1 text-center">No</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">ID Komponen Gaji</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Nama Komponen</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Kategori</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Jabatan</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Nominal</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Satuan</th>
+                                <th class="border border-gray-400 px-2 py-1 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Data diisi oleh JS --}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
